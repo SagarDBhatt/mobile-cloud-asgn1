@@ -18,13 +18,19 @@
 package org.magnum.dataup;
 
 import org.magnum.dataup.model.Video;
+import org.magnum.dataup.model.VideoStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import retrofit.http.Multipart;
 
+import javax.print.attribute.standard.Media;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collection;
 
 @RestController
@@ -65,7 +71,20 @@ public class ControllerClass {
         return videoList;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "/video/{id}/data", method = RequestMethod.POST,
+                    consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
+                    produces = {MediaType.APPLICATION_JSON_VALUE})
+    public VideoStatus postVideoData(@PathVariable(value = "id") Long id, @RequestParam(value = "data") MultipartFile videoData,
+                                     HttpServletResponse response) throws IOException {
+        return videoService.srvPostVideo(id,videoData,response);
+    }
 
+    @ResponseBody
+    @GetMapping(value = "/video/{id}/data")
+    public HttpServletResponse getVideoData(@PathVariable(value = "id") Long id, HttpServletResponse response){
+           return videoService.getVideoData(id,response);
+    }
 
 
 }
