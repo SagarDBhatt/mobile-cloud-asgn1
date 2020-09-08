@@ -35,11 +35,17 @@ public class VideoService {
      * @return
      */
     public Video postVideo(Video video){
+//        Video video = new Video();
         checkAndSetId(video);
-        videoMaps.put(video.getId(),video);
         String dataURL = getDataUrl(video.getId());
         video.setDataUrl(dataURL);
-
+  /*      video.setTitle(v.getTitle());
+        video.setContentType(v.getContentType());
+        video.setSubject(v.getSubject());
+        video.setLocation(v.getLocation());
+        video.setDuration(v.getDuration());
+*/
+        videoMaps.put(video.getId(),video);
         videoLists.add(video);
         return video;
     }
@@ -79,7 +85,7 @@ public class VideoService {
      * 6. Return Collection of video.
      * @return
      */
-    public Collection<Video> getVideoList(){
+    public List<Video> getVideoList(){
         return videoLists;
     }
 

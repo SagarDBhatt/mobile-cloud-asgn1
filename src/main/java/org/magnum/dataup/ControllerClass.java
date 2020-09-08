@@ -26,15 +26,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import retrofit.client.Response;
 import retrofit.http.Multipart;
+import retrofit.mime.TypedFile;
 
 import javax.print.attribute.standard.Media;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Collection;
+import java.util.List;
 
 @RestController
-public class ControllerClass {
+public class ControllerClass implements VideoSvcApi {
 
     /**
      * You will need to create one or more Spring controllers to fulfill the
@@ -54,9 +57,35 @@ public class ControllerClass {
     @Autowired
     VideoService videoService;
 
+
+    @Override
+    @RequestMapping(value = VIDEO_SVC_PATH, method = RequestMethod.GET)
+    public @ResponseBody List<Video> getVideoList() {
+        return videoService.getVideoList();
+    }
+
+    @Override
+    @RequestMapping(value = VIDEO_SVC_PATH, method = RequestMethod.POST)
+    public @ResponseBody Video addVideo(@RequestBody Video v) {
+        return videoService.postVideo(v);
+    }
+
+    @Override
+    public VideoStatus setVideoData(long id, TypedFile videoData) {
+        return null;
+    }
+
+    @Override
+    public Response getData(long id) {
+        return null;
+    }
+
+/*
+
     @RequestMapping(value = "/video", method = RequestMethod.POST,
-			consumes = {MediaType.APPLICATION_JSON_VALUE},
-			produces ={MediaType.APPLICATION_JSON_VALUE})
+            consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces ={MediaType.APPLICATION_JSON_VALUE})
+
     public ResponseEntity<Video> postVideo(@RequestBody Video v) {
         ResponseEntity<Video> respVideo = new ResponseEntity<>(videoService.postVideo(v), HttpStatus.OK);
         return respVideo;
@@ -70,6 +99,7 @@ public class ControllerClass {
         ResponseEntity<Collection<Video>> videoList = new ResponseEntity<>(videoService.getVideoList(), HttpStatus.OK);
         return videoList;
     }
+
 
     @ResponseBody
     @RequestMapping(value = "/video/{id}/data", method = RequestMethod.POST,
@@ -86,5 +116,6 @@ public class ControllerClass {
            return videoService.getVideoData(id,response);
     }
 
+*/
 
 }
